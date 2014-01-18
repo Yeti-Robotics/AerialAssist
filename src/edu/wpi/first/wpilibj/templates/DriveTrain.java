@@ -13,41 +13,68 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.RobotDrive;
+
+
 
 
 public class DriveTrain {
-    Jaguar frontLeft;
-    Jaguar backLeft;
-    Jaguar frontRight;
-    Jaguar backRight;
+    RobotDrive drive;
+    Gyro gyro;
     
-    public void DriveTrain(int frontLeftPort, int frontRightPort, int backLeftPort, int backRightPort) {
-        frontLeft = new Jaguar(frontLeftPort);
-        frontRight = new Jaguar(frontRightPort);
-        backLeft = new Jaguar(backLeftPort);
-        backRight = new Jaguar(backRightPort);
+    public void DriveTrain(int frontLeftPort, int rearLeftPort, int frontRightPort, int rearRightPort, boolean[] inverted, int gyroPort) {
+        drive = new RobotDrive(frontLeftPort, rearLeftPort, frontRightPort, rearRightPort);
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, inverted[0]);
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, inverted[1]);
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, inverted[2]);
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, inverted[3]);
+        drive.setSafetyEnabled(true);
+        gyro = new Gyro(gyroPort);
     }
+    
+    public void drive(double x, double y, double rotation) {
+        drive.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
+    }
+   
     public void frontRight() {
      
         
         
     }
+    
     public void frontLeft() {
         
         
         
     }   
+    
     public void backRight() {
         
         
         
     }
+    
     public void backLeft() {
         
         
         
     }
-       
+   
+    public void moveForward(int speed) {
+        
+        
+        
+        frontRight.set(speed);
+        frontLeft.set(speed);
+        backRight.set(speed);
+        backLeft.set(speed);
+        
+        
+        
+        
+    }    
+        
+    
+    
     }    
 }
