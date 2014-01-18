@@ -3,13 +3,13 @@
  */
 
 
-/*  SSSSSSSS    WWWWW            WWWWW     AAAAAAA           GGGGGGGG  
-   SSS     SS    WW                WW       AA AA         GGGG      GGG
-   SSSS           WW              WW       AA   AA       GGG        
-      SSSSS        WW    WWWW    WW       AAAAAAAAA      GG
-         SSSS       WW WW   WW WW        AA       AA     GGG       GGGGGG
-   SS     SSS        WWW      WWW       AA         AA     GGGG      GGGGG
-    SSSSSSSS       WWWWWWW  WWWWWWW   AAAAA       AAAAA     GGGGGGGGG  GG
+/*    ##   ##       YYYY    YYYY      OOOOO     LLLLLL           OOOOO              SSSSSSSS    WWWWW            WWWWW     AAAAAAA           GGGGGGGG  
+      ##   ##        YY      YY     OO     OO     LL           OO     OO           SSS     SS    WW                WW       AA AA         GGGG      GGG
+   #############      YY    YY     OOO     OOO    LL          OOO     OOO          SSSS           WW              WW       AA   AA       GGG        
+      ##   ##           YYYY       OOO     OOO    LL          OOO     OOO             SSSSS        WW    WWWW    WW       AAAAAAAAA      GG
+   #############         YY        OOO     OOO    LL          OOO     OOO                SSSS       WW WW   WW WW        AA       AA     GGG       GGGGGG
+      ##   ##            YY         OO     OO     LL     LL    OO     OO           SS     SSS        WWW      WWW       AA         AA     GGGG      GG GG
+      ##   ##          YYYYYY         OOOOO      LLLLLLLLLL      OOOOO              SSSSSSSS       WWWWWWW  WWWWWWW   AAAAA       AAAAA     GGGGGGGGG  GG
 */
 
 package edu.wpi.first.wpilibj.templates;
