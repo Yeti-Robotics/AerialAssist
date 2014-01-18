@@ -3,13 +3,13 @@
  */
 
 
-/*  SSSSSSSS    WWWWW            WWWWW
-   SSS     SS    WW                WW
-   SSSS          WW                WW
-      SSSSS       WW     WWWW     WW
-         SSSS      WWW WWW  WWW WWW
-   SS     SSS       WWWWW    WWWWW
-    SSSSSSSS       WWWWWWW  WWWWWWW   
+/*  SSSSSSSS    WWWWW            WWWWW     AAAAAAA           GGGGGGGG  
+   SSS     SS    WW                WW       AA AA         GGGG      GGG
+   SSSS           WW              WW       AA   AA       GGG        
+      SSSSS        WW    WWWW    WW       AAAAAAAAA      GG
+         SSSS       WW WW   WW WW        AA       AA     GGG       GGGGGG
+   SS     SSS        WWW      WWW       AA         AA     GGGG      GGGGG
+    SSSSSSSS       WWWWWWW  WWWWWWW   AAAAA       AAAAA     GGGGGGGGG  GG
 */
 
 
