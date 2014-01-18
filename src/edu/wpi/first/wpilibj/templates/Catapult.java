@@ -12,17 +12,37 @@
     SSSSSSSS       WWWWWWW  WWWWWWW   AAAAA       AAAAA     GGGGGGGGG  GG
 */
 
-
-
-
-
-
-
 package edu.wpi.first.wpilibj.templates;
 
 public class Catapult {
     
-    public static void method(){
+    public static void Catapult(int sol1, int sol2, boolean limitSwitchCatapult){
         
+    }
+    
+    public boolean isDown(){
+        boolean isDown = false;
+        return isDown;
+    }
+    
+      public boolean isLoaded(){
+        boolean loadValue = false; 
+        return loadValue;
+    }
+      
+    public void shootHigh(){
+    
+    }
+    
+    public void shootLow(){
+    
+    }
+    
+    public void raiseArm(){
+    
+    }
+    
+    public void lowerArm(){
+    
     }
 }
