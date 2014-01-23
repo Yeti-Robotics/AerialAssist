@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/*
+
 package edu.wpi.first.wpilibj.templates;
 
 /**
@@ -16,13 +16,11 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 
-
-
 public class DriveTrain {
     RobotDrive drive;
     Gyro gyro;
     
-    public void DriveTrain(int frontLeftPort, int rearLeftPort, int frontRightPort, int rearRightPort, boolean[] inverted, int gyroPort) {
+    public DriveTrain(int frontLeftPort, int rearLeftPort, int frontRightPort, int rearRightPort, boolean[] inverted, int gyroPort) {
         drive = new RobotDrive(frontLeftPort, rearLeftPort, frontRightPort, rearRightPort);
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, inverted[0]);
         drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, inverted[1]);
@@ -62,19 +60,5 @@ public class DriveTrain {
    
     public void moveForward(int speed) {
         
-        
-        
-        frontRight.set(speed);
-        frontLeft.set(speed);
-        backRight.set(speed);
-        backLeft.set(speed);
-        
-        
-        
-        
-    }    
-        
-    
-    
-    }    
+    } 
 }
