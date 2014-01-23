@@ -11,6 +11,7 @@ package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the SimpleRobot
@@ -23,6 +24,7 @@ public class RobotTemplate extends SimpleRobot {
     
     Jaguar frontLeft, frontRight, backLeft, backRight;
     Joystick leftJoy, rightJoy;
+    DriveTrain yetiDrive;
     
     public void RobotTemplate() {
     
@@ -32,6 +34,8 @@ public class RobotTemplate extends SimpleRobot {
         backRight = new Jaguar(4);
         leftJoy = new Joystick(1);
         rightJoy = new Joystick(2);
+        boolean[] inverted = {true, true, true, false};
+        yetiDrive = new DriveTrain(4, 3, 2, 1, inverted, 1);
         
         
     }
@@ -48,12 +52,8 @@ public class RobotTemplate extends SimpleRobot {
      */
     public void operatorControl() {
         while(isEnabled()) {
-            double leftY = leftJoy.getY();
-            double rightY = rightJoy.getY();
-            frontRight.set(rightY);
-            frontLeft.set(leftY);
-            backRight.set(rightY);
-            backLeft.set(leftY);
+            yetiDrive.drive(leftJoy.getX(), leftJoy.getY(), rightJoy.getX());
+            Timer.delay(0.01);
             
         }
     }
