@@ -10,6 +10,18 @@
    #############          YY        OOO     OOO    LLL          OOO     OOO                SSSS       WW WW    WW WW       AA       AA     GGGGG     GGGGGG
      ##   ##              YY         OO     OO     LLL     LL    OO     OO           SS     SSS        WWW      WWW       AA         AA     GGGG      GG GG
      ##   ##            YYYYYY         OOOOO      LLLLLLLLLL       OOOOO              SSSSSSSS       WWWWWWW  WWWWWWW   AAAAA       AAAAA     GGGGGGGGG  GG
+
+
+
+       ##   ##          444  444     2222222         00000               BBBBBBBB     LLLLL              AAAAAAA       ZZZZZZZZZZZ
+       ##   ##         444   444    22     222     00     00              BB   BBB     LLL                AAAAA         ZZ      ZZ
+   #############      444    444           222    000     000             BB   BBB     LLL               AA   AA         ZZ
+      ##   ##        444444444444        222      000     000             BBBBBBBB     LLL              AAAAAAAAA          ZZ
+   #############             444        222       000     000             BB    BBB    LLL             AA       AA          ZZ
+     ##   ##                 444      2222         00     00              BB    BBB    LLL     LL     AA         AA     ZZ    ZZ 
+     ##   ##                 444    22222222222      00000               BBBBBBBBB    LLLLLLLLLL    AAAAA       AAAAA   ZZZZZZZZZZ
+
+
 */
 
 package edu.wpi.first.wpilibj.templates;
