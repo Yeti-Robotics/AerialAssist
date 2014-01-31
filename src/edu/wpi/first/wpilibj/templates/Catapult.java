@@ -13,13 +13,14 @@
 
 
 
-       ##   ##          444  444     2222222         00000               BBBBBBBB     LLLLL              AAAAAAA       ZZZZZZZZZZZ
-       ##   ##         444   444    22     222     00     00              BB   BBB     LLL                AAAAA         ZZ      ZZ
-   #############      444    444           222    000     000             BB   BBB     LLL               AA   AA         ZZ
-      ##   ##        444444444444        222      000     000             BBBBBBBB     LLL              AAAAAAAAA          ZZ
-   #############             444        222       000     000             BB    BBB    LLL             AA       AA          ZZ
-     ##   ##                 444      2222         00     00              BB    BBB    LLL     LL     AA         AA     ZZ    ZZ 
-     ##   ##                 444    22222222222      00000               BBBBBBBBB    LLLLLLLLLL    AAAAA       AAAAA   ZZZZZZZZZZ
+       ##   ##          444  444     2222222         00000               BBBBBBBB     LLLLL              AAAAAAA        ZZZZZZZZZZ   EEEEEEEEEEE             IIIIII  TTTTTTTTTTTT
+       ##   ##         444   444    22     222     00     00              BB   BBB     LLL                AAAAA         ZZ     ZZ      EE     EE               II    TT   TT   TT
+   #############      444    444           222    000     000             BB   BBB     LLL               AA   AA             ZZ        EE  E                   II         TT
+      ##   ##        444444444444        222      000     000             BBBBBBBB     LLL              AAAAAAAAA           ZZ         EEEEE                   II         TT
+   #############             444        222       000     000             BB    BBB    LLL             AA       AA         ZZ          EE  E                   II         TT
+     ##   ##                 444      2222         00     00              BB    BBB    LLL     LL     AA         AA      ZZ     ZZ     EE     EE               II         TT
+     ##   ##                 444    22222222222      00000               BBBBBBBBB    LLLLLLLLLL    AAAAA       AAAAA   ZZZZZZZZZZ   EEEEEEEEEEE             IIIIII     TTTTTT
+
 
 
 */
@@ -27,6 +28,7 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Catapult {
