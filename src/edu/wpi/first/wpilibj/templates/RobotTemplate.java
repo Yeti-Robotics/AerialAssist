@@ -21,24 +21,11 @@ import edu.wpi.first.wpilibj.Timer;
  */
 
 public class RobotTemplate extends SimpleRobot {
-    
-    Jaguar frontLeft, frontRight, backLeft, backRight;
-    Joystick leftJoy, rightJoy;
-    DriveTrain yetiDrive;
-    
-    public void RobotTemplate() {
-    
-        frontLeft = new Jaguar(1);
-        frontRight = new Jaguar(2);
-        backLeft = new Jaguar(3);
-        backRight = new Jaguar(4);
-        leftJoy = new Joystick(1);
-        rightJoy = new Joystick(2);
-        boolean[] inverted = {true, true, true, false};
-        yetiDrive = new DriveTrain(4, 3, 2, 1, inverted, 1);
-        
-        
-    }
+    double modifier = 1d;
+    Joystick leftJoy = new Joystick(2);
+    Joystick rightJoy = new Joystick(1);
+    boolean[] inverted = {false, false, true, true};
+    DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);            
     
     /**
      * This function is called once each time the robot enters autonomous mode.
@@ -52,7 +39,7 @@ public class RobotTemplate extends SimpleRobot {
      */
     public void operatorControl() {
         while(isEnabled()) {
-            yetiDrive.drive(leftJoy.getX(), leftJoy.getY(), rightJoy.getX());
+            yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
             Timer.delay(0.01);
             
         }
