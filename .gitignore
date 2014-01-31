@@ -4,5 +4,9 @@
 *.jar
 *.war
 *.ear
+<<<<<<< HEAD
+/build/
+=======
 /build/
 nbproject/project.bak.xml
+>>>>>>> origin/master
