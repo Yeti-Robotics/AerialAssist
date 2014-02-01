@@ -8,7 +8,6 @@
 package edu.wpi.first.wpilibj.templates;
 
 
-import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
@@ -26,8 +25,7 @@ public class RobotTemplate extends SimpleRobot {
     Joystick leftJoy = new Joystick(2);
     Joystick rightJoy = new Joystick(1);
     boolean[] inverted = {false, false, true, true};
-    DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);     
-    DriverStationLCD driverStationLCD;
+    DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);            
     
     /**
      * This function is called once each time the robot enters autonomous mode.
@@ -40,11 +38,8 @@ public class RobotTemplate extends SimpleRobot {
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
-        driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
             yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
-            driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "Did I do this right?");
-            driverStationLCD.updateLCD();
             Timer.delay(0.01);
             
         }
