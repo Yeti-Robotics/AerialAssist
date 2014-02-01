@@ -20,16 +20,18 @@ import edu.wpi.first.wpilibj.Talon;
 public class DriveTrain {
     RobotDrive drive;
     Gyro gyro;
-    public static final int FRPORT = 1;
-    public static final int FLPORT = 1;
-    public static final int BRPORT = 1;
-    public static final int BLPORT = 1;
+    //WRONG PORTS FOR THE MOTORS
+    /*
+    public static final int FRPORT = 5;
+    public static final int FLPORT = 6;
+    public static final int BRPORT = 7;
+    public static final int BLPORT = 8;
     
     Talon frontRight = new Talon(FRPORT);
     Talon frontLeft = new Talon(FLPORT);
     Talon backRight = new Talon(BRPORT);
     Talon backLeft = new Talon(BLPORT);
-    
+    */
        
     public DriveTrain(int frontLeftPort, int rearLeftPort, int frontRightPort, int rearRightPort, boolean[] inverted, int gyroPort) {
         drive = new RobotDrive(frontLeftPort, rearLeftPort, frontRightPort, rearRightPort);
@@ -45,16 +47,13 @@ public class DriveTrain {
         drive.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
    
-    public void moveForward(double speed) {
+    public void driveForward(double speed) {
  
-        frontRight.set(speed);
-        frontLeft.set(speed);
-        backRight.set(speed);
-        backLeft.set(speed);
+       drive.tankDrive(speed,speed);
      
     } 
     
-    public void driveCustom(double fr, double fl, double br, double bl){
+    /*public void driveCustom(double fr, double fl, double br, double bl){
          
         frontRight.set(fr);
         frontLeft.set(fl);
@@ -64,6 +63,6 @@ public class DriveTrain {
         
         
         
-    }           
+    }    */      
 }
 

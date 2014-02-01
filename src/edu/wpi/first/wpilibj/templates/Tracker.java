@@ -6,6 +6,8 @@
 
 package edu.wpi.first.wpilibj.templates;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -22,7 +24,8 @@ import edu.wpi.first.wpilibj.image.RGBImage;
  * @author Evan Vitkus
  */
 public class Tracker {
-    //Camera constants used for distance calculation
+    
+   //Camera constants used for distance calculation
     final int Y_IMAGE_RES = 480;		//X Image resolution in pixels, should be 120, 240 or 480
     final double VIEW_ANGLE = 49;		//Axis M1013
     //final double VIEW_ANGLE = 41.7;		//Axis 206 camera
@@ -46,7 +49,10 @@ public class Tracker {
 
     AxisCamera camera;          // the axis camera object (connected to the switch)
     CriteriaCollection cc;      // the criteria for doing the particle filter operation
-    Ultrasonic sonar;           // the ultrasonic sensor
+
+    final static double TRACK_SPEED = 0.5;
+    
+    //DriveTrain driveTrain = new DriveTrain();
     
     public class Scores {
         double rectangularity;
@@ -225,10 +231,7 @@ public class Tracker {
             return Y_IMAGE_RES * targetHeight / (height * 12 * 2 * Math.tan(VIEW_ANGLE*Math.PI/(180*2)));
     }
     
-    public double computeDistance ()
-    {
-           return  sonar.getRangeInches();
-    }
+
     /**
      * Computes a score (0-100) comparing the aspect ratio to the ideal aspect ratio for the target. This method uses
      * the equivalent rectangle sides to determine aspect ratio as it performs better as the target gets skewed by moving
@@ -320,4 +323,29 @@ public class Tracker {
 		
 		return isHot;
 	}
+        
+        public double trackY(double dToGoal,AnalogChannel sonar,double buffer)
+        {
+            double direction;
+            if((dToGoal+buffer)<(10*sonar.getVoltage()))
+            {
+                
+                System.out.println("Forward");
+                direction = TRACK_SPEED;
+                
+            }
+            else if((dToGoal-buffer)>(10*sonar.getVoltage()))
+            {
+                
+                System.out.println("backward");
+                direction = -TRACK_SPEED;
+            }
+            else
+            {
+                
+                System.out.println("Done");
+                direction = 0;
+            }
+            return direction;
+        }
 }

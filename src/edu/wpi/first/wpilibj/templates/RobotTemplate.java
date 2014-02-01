@@ -8,6 +8,7 @@
 package edu.wpi.first.wpilibj.templates;
 
 
+import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -28,12 +29,15 @@ public class RobotTemplate extends SimpleRobot {
     boolean[] inverted = {false, false, true, true};
     DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);     
     DriverStationLCD driverStationLCD;
+    AnalogChannel sonar = new AnalogChannel (3);
+    Tracker tracker = new Tracker();
+    
     
     /**
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
-        
+        tracker.trackY(5,sonar,.3);
     }
 
     /**
@@ -42,8 +46,18 @@ public class RobotTemplate extends SimpleRobot {
     public void operatorControl() {
         driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
-            yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
-            driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "Did I do this right?");
+            if(leftJoy.getRawButton(3))
+            {
+                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+                System.out.println("track: " + tracker.trackY(5,sonar,.3));
+                driverStationLCD.println(DriverStationLCD.Line.kUser1, 3, "tracking");
+                
+            }
+            else
+            {
+                yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
+            }
+            driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
             driverStationLCD.updateLCD();
             Timer.delay(0.01);
             
