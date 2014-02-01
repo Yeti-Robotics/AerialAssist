@@ -14,12 +14,23 @@ package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Talon;
 
 
 public class DriveTrain {
     RobotDrive drive;
     Gyro gyro;
+    public static final int FRPORT = 1;
+    public static final int FLPORT = 1;
+    public static final int BRPORT = 1;
+    public static final int BLPORT = 1;
     
+    Talon frontRight = new Talon(FRPORT);
+    Talon frontLeft = new Talon(FLPORT);
+    Talon backRight = new Talon(BRPORT);
+    Talon backLeft = new Talon(BLPORT);
+    
+       
     public DriveTrain(int frontLeftPort, int rearLeftPort, int frontRightPort, int rearRightPort, boolean[] inverted, int gyroPort) {
         drive = new RobotDrive(frontLeftPort, rearLeftPort, frontRightPort, rearRightPort);
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, inverted[0]);
@@ -34,31 +45,25 @@ public class DriveTrain {
         drive.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
    
-    public void frontRight() {
+    public void moveForward(double speed) {
+ 
+        frontRight.set(speed);
+        frontLeft.set(speed);
+        backRight.set(speed);
+        backLeft.set(speed);
      
-        
-        
-    }
-    
-    public void frontLeft() {
-        
-        
-        
-    }   
-    
-    public void backRight() {
-        
-        
-        
-    }
-    
-    public void backLeft() {
-        
-        
-        
-    }
-   
-    public void moveForward(int speed) {
-        
     } 
+    
+    public void driveCustom(double fr, double fl, double br, double bl){
+         
+        frontRight.set(fr);
+        frontLeft.set(fl);
+        backRight.set(br);
+        backLeft.set(bl);
+               
+        
+        
+        
+    }           
 }
+
