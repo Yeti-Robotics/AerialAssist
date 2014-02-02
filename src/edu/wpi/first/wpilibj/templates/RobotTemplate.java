@@ -31,6 +31,7 @@ public class RobotTemplate extends SimpleRobot {
     DriverStationLCD driverStationLCD;
     AnalogChannel sonar = new AnalogChannel (3);
     Tracker tracker = new Tracker();
+    Forklift forklift = new Forklift();
     
     
     /**
@@ -60,6 +61,15 @@ public class RobotTemplate extends SimpleRobot {
             {
                 yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
             }
+            if(rightJoy.getRawButton(2))
+            {
+                forklift.moveUp();
+            }
+            else if(leftJoy.getRawButton(3))
+            {
+                forklift.moveDown();
+            }
+            else if()
             driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
             driverStationLCD.updateLCD();
             Timer.delay(0.01);
