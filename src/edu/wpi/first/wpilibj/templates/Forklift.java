@@ -28,59 +28,8 @@ public class Forklift {
        aboveMiddle = true;
         
     }
-   // public void forkMove(){
-        
-        
-  /*      if (downLimit.get())
-        {
-            if (midJoy.getTrigger())
-            {
-                forkTalon.set(.1);
-            }
-            else 
-            {
-                forkTalon.set(0);
-            }
-        } else if (midLimit.get()) {
-            
-            forkTalon.set(0);
-            
-            if (midJoy.getTrigger()) {
-                
-                forkTalon.set(.1);
-                
-            } 
-            else if (leftJoy.getTrigger()) {
-                forkTalon.set(-0.05);
-            } 
-            else {
-                forkTalon.set(0);
-            }
-            }
-        
-        else if (upLimit.get()) 
-        {  
-            if(leftJoy.getTrigger())
-            {
-                forkTalon.set(-.05);
-            }
-            else 
-            {
-                forkTalon.set(0);
-            } 
-        } 
-        else
-        {if (leftJoy.getTrigger()) 
-            {
-                forkTalon.set(-.05);   
-            }
-            else
-            {
-               forkTalon.set(0); 
-            }
-         }*/
-    
-    public void forkMoveUp() {
+    /** this method makes the forklift move up if the upper limit switch is not being pushed.**/
+    public void moveUp() {
         //upLimit is port 1
     if (downLimit.get()== false) {
         forkTalon.set(0);
@@ -89,8 +38,8 @@ public class Forklift {
         forkTalon.set(-1);
     }
     }
-
-    public void forkMoveDown(){
+/** this method makes the forklift move down if the bottom limit switch is not being pushed.**/
+    public void moveDown(){
         //downLimit is port 6
     if (upLimit.get()== false) {
         forkTalon.set(0);
@@ -99,18 +48,19 @@ public class Forklift {
         forkTalon.set(1);
     }
     }
-    public void forkMoveMiddle(){}
+    public void moveMiddle(){}
     
-    public void forkAboveMiddle(){
+    public void aboveMiddle(){
     if (midLimit.get()== false) {
         forkTalon.set(0.5);
     }
     }
-    public void forkBelowMiddle(){
+    public void belowMiddle(){
     if (midLimit.get()== false) {
         forkTalon.set(-1);
     }
     }
+    /** this method makes the forklift stop moving.**/
     public void stop(){
     forkTalon.set(0);
     }
