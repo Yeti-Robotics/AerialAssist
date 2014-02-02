@@ -34,12 +34,11 @@ public class RobotTemplate extends SimpleRobot {
     
     //FORKLIFT
     
-    /*private static int UP_SPIKE_POS = 1;
-    private static int DOWN_SPIKE_POS = 2;
-    private static int CAT_LOWER_LIMIT_POS = 3;
-    private static int CAT_MIDDLE_LIMIT_POS = 4;
-    private static int CAT_LOADED_LIMIT_POS = 5;
-    */
+    private static int FORK_UP_LIMIT_POS = 1;
+    private static int FORK_MIDDLE_LIMIT_POS = 2;
+    private static int FORK_DOWN_LIMIT_POS = 3;
+    private static int FORK_TALON = 4;
+        
     
     
     double modifier = 1d;
@@ -47,7 +46,7 @@ public class RobotTemplate extends SimpleRobot {
     Joystick rightJoy = new Joystick(1);
     Joystick shootJoy = new Joystick(3);
     boolean[] inverted = {false, false, true, true};
-    DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);     
+    DriveTrain yetiDrive = new DriveTrain(1, 3, 2, 4, inverted, 2);     
     DriverStationLCD driverStationLCD;
     AnalogChannel sonar = new AnalogChannel (3);
     Tracker tracker;
@@ -71,7 +70,8 @@ public class RobotTemplate extends SimpleRobot {
     public void operatorControl() {
         tracker = new Tracker();
         //forklift = new Forklift();
-        catapult = new Catapult(UP_SPIKE_POS,DOWN_SPIKE_POS,CAT_LOWER_LIMIT_POS,CAT_MIDDLE_LIMIT_POS,CAT_LOADED_LIMIT_POS);
+        //catapult = new Catapult(UP_SPIKE_POS,DOWN_SPIKE_POS,CAT_LOWER_LIMIT_POS,CAT_MIDDLE_LIMIT_POS,CAT_LOADED_LIMIT_POS);
+        //forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
         driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
             if(leftJoy.getRawButton(3))
@@ -86,7 +86,7 @@ public class RobotTemplate extends SimpleRobot {
                 yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
             }
 
-            if(rightJoy.getRawButton(2))
+            /*if(rightJoy.getRawButton(2))
             {
                 forklift.moveUp();
             }
@@ -105,7 +105,7 @@ public class RobotTemplate extends SimpleRobot {
             if(shootJoy.getRawButton(1))
             {
                 catapult.armTop();
-            }
+            }*/
             driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
             driverStationLCD.updateLCD();
             Timer.delay(0.01);

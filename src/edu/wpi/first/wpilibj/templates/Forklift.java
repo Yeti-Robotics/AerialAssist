@@ -24,12 +24,12 @@ public class Forklift {
     Talon forkTalon = new Talon(7);
     boolean aboveMiddle;
 
-    public Forklift(final int FORK_UP_LIMIT_POS, final int FORK_MIDDLE_LIMIT_POS, final int FORK_DOWN_LIMIT_POS) {
+    public Forklift(final int FORK_UP_LIMIT_POS, final int FORK_MIDDLE_LIMIT_POS, final int FORK_DOWN_LIMIT_POS, final int FORK_TALON) {
        aboveMiddle = true;
        upLimit = new DigitalInput(FORK_UP_LIMIT_POS);
        midLimit = new DigitalInput(FORK_MIDDLE_LIMIT_POS);
        downLimit = new DigitalInput(FORK_DOWN_LIMIT_POS);
-       forkTalon = new Talon(7);
+       forkTalon = new Talon(FORK_TALON);
     }
     /** this method makes the forklift move up if the upper limit switch is not being pushed.**/
     public void moveUp() {
