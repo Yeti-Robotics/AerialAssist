@@ -32,7 +32,7 @@ public class RobotTemplate extends SimpleRobot {
     AnalogChannel sonar = new AnalogChannel (3);
     Tracker tracker = new Tracker();
     Forklift forklift = new Forklift();
-    
+
     
     /**
      * This function is called once each time the robot enters autonomous mode.
@@ -61,6 +61,7 @@ public class RobotTemplate extends SimpleRobot {
             {
                 yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
             }
+
             if(rightJoy.getRawButton(2))
             {
                 forklift.moveUp();
@@ -69,7 +70,10 @@ public class RobotTemplate extends SimpleRobot {
             {
                 forklift.moveDown();
             }
-            else if()
+            else if(rightJoy.getRawButton(3))
+            {
+                forklift.moveMiddle();
+            }
             driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
             driverStationLCD.updateLCD();
             Timer.delay(0.01);
