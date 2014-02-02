@@ -8,6 +8,8 @@
 package edu.wpi.first.wpilibj.templates;
 
 
+import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
@@ -25,43 +27,50 @@ public class RobotTemplate extends SimpleRobot {
     Joystick leftJoy = new Joystick(2);
     Joystick rightJoy = new Joystick(1);
     boolean[] inverted = {false, false, true, true};
-    //DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);    
-    Forklift forklift = new Forklift();
+    DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);     
+    DriverStationLCD driverStationLCD;
+    AnalogChannel sonar = new AnalogChannel (3);
+    Tracker tracker = new Tracker();
     
-    
-
     
     /**
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
-        
-    }
+        while (tracker.trackY(5, sonar, .3) != 0)
+        {
+        yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+        }
+}
 
     /**
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
+        driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
-           // yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
-            //Timer.delay(0.01);
-            if (rightJoy.getRawButton(2)) {
-                forklift.forkMoveUp();
+            if(leftJoy.getRawButton(3))
+            {
+                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+                System.out.println("track: " + tracker.trackY(5,sonar,.3));
+                driverStationLCD.println(DriverStationLCD.Line.kUser1, 3, "tracking");
+                
             }
-            else if (leftJoy.getRawButton(2)) {
-                forklift.forkMoveDown();
+            else
+            {
+                yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
             }
-            else {
-                forklift.stop();
-            }
-            }
+            driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
+            driverStationLCD.updateLCD();
+            Timer.delay(0.01);
+            
         }
-    
+    }
     
     /**
      * This function is called once each time the robot enters test mode.
      */
-   public void test() {
+    public void test() {
     
     }
 }
