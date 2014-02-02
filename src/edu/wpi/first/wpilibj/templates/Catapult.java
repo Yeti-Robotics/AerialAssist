@@ -35,30 +35,30 @@ import edu.wpi.first.wpilibj.Relay;
 public class Catapult {
         
     //Solenoid upSol;
-    //Solenoid downSol;
+    //Solenoid downSpike;
     DigitalInput armDownLimit; 
     DigitalInput armLoadedLimit;
     DigitalInput armMiddleLimit;
-    Relay upSol;
-    Relay downSol;
+    Relay upSpike;
+    Relay downSpike;
         
     /**
      * This is a constructor method to initialize ports given into the method through RobotTemplate.java
-     * @param sol1 port for the up spike of the catapult solenoid
-     * @param sol2 port for the down spike of the catapult solenoid
-     * @param limitSwitchPortDown port for the isDown limit switch
-     * @param limitSwitchPortLoaded port for the isLoaded limit switch
-     * @param limitSwitchPortMiddle port for the armBottomMiddle limit switch on the pistons
+     * @param SPI1 port for the up spike of the catapult solenoid
+     * @param SPI2 port for the down spike of the catapult solenoid
+     * @param LSPDOWN port for the isDown limit switch
+     * @param LSPLOADED port for the isLoaded limit switch
+     * @param LSPMIDDLE port for the armBottomMiddle limit switch on the pistons
      */
-    public void Catapult(int sol1, int sol2, int limitSwitchPortDown, int limitSwitchPortLoaded, int limitSwitchPortMiddle){
+    public void Catapult(final int SPI1, final int SPI2, final int LSPDOWN, final int LSPLOADED, final int LSPMIDDLE){
         
         //upSol = new Solenoid(sol1);
-        //downSol = new Solenoid(sol2);
-        upSol = new Relay(sol1); //If upSol is set to Relay.Value.kOn and downSol is set to Relay.Value.kOff then the arm will go up
-        downSol = new Relay(sol2); //If downSol is set to Relay.Value.kOn and upSol is set to Relay.Value.kOff then the arm will go down
-        armDownLimit = new DigitalInput(limitSwitchPortDown);     
-        armLoadedLimit = new DigitalInput(limitSwitchPortLoaded);
-        armMiddleLimit = new DigitalInput(limitSwitchPortMiddle);
+        //downSpike = new Solenoid(sol2);
+        upSpike = new Relay(SPI1); //If upSol is set to Relay.Value.kOn and downSpike is set to Relay.Value.kOff then the arm will go up
+        downSpike = new Relay(SPI2); //If downSpike is set to Relay.Value.kOn and upSol is set to Relay.Value.kOff then the arm will go down
+        armDownLimit = new DigitalInput(LSPDOWN);     
+        armLoadedLimit = new DigitalInput(LSPLOADED);
+        armMiddleLimit = new DigitalInput(LSPMIDDLE);
     }
     
     /**
@@ -91,33 +91,41 @@ public class Catapult {
      * This method activates the solenoid spikes and launches the arm all the way up
      */
     public void armTop(){
-        upSol.set(Relay.Value.kOn);
-        downSol.set(Relay.Value.kOff);        
+        upSpike.set(Relay.Value.kOn);
+        downSpike.set(Relay.Value.kOff);        
     }
     
     /**
      * This method activates the solenoid spikes, but uses the limit switch and only launches the arm midway up
      */
     public void armMiddle(){
-        while(armMiddleLimit.get() == false) {
-            if (downSol.get() == Relay.Value.kOn && upSol.get() == Relay.Value.kOff){
-                upSol.set(Relay.Value.kOn);
-                downSol.set(Relay.Value.kOff);
-            }else if (upSol.get() == Relay.Value.kOn && downSol.get() == Relay.Value.kOff){
-                upSol.set(Relay.Value.kOff);
-                downSol.set(Relay.Value.kOn);
+        /*while(armMiddleLimit.get() == false) {
+            if (downSpike.get() == Relay.Value.kOn && upSpike.get() == Relay.Value.kOff && armMiddleLimit.get() == false){ //Brings the arm up to the middle if the arm is down
+                upSpike.set(Relay.Value.kOn);
+                downSpike.set(Relay.Value.kOff);
+            }else if (upSpike.get() == Relay.Value.kOn && downSpike.get() == Relay.Value.kOff){ //Brings the arm down to the middle if the arm is down
+                upSpike.set(Relay.Value.kOff);
+                downSpike.set(Relay.Value.kOn);
             }
         }
-        upSol.set(Relay.Value.kOff);
-        downSol.set(Relay.Value.kOff);
+        upSpike.set(Relay.Value.kOff);
+        downSpike.set(Relay.Value.kOff);*/
+        if (downSpike.get() == Relay.Value.kOn && upSpike.get() == Relay.Value.kOff && armMiddleLimit.get() == false){ //Brings the arm up to the middle if the arm is down
+                upSpike.set(Relay.Value.kOn);
+                downSpike.set(Relay.Value.kOff);
+        }else{
+            upSpike.set(Relay.Value.kOff);
+            downSpike.set(Relay.Value.kOn);            
+        }
+        
     }
     
     /**
      * This method activates the solenoid spikes and brings the arm all the way down
      */
     public void armBottom(){
-        downSol.set(Relay.Value.kOn);
-        upSol.set(Relay.Value.kOff);
+        downSpike.set(Relay.Value.kOn);
+        upSpike.set(Relay.Value.kOff);
     }
     
     public void driveForward(){
