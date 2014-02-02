@@ -37,8 +37,11 @@ public class RobotTemplate extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
-        tracker.trackY(5,sonar,.3);
-    }
+        while (tracker.trackY(5, sonar, .3) != 0)
+        {
+        yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+        }
+}
 
     /**
      * This function is called once each time the robot enters operator control.
