@@ -25,7 +25,8 @@ public class RobotTemplate extends SimpleRobot {
     Joystick leftJoy = new Joystick(2);
     Joystick rightJoy = new Joystick(1);
     boolean[] inverted = {false, false, true, true};
-    DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);            
+    DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);
+    Catapult catapult = new Catapult(/* these values need to be passed in when the Catapult object is initialized so that the variables in Catapult.java will have the correct ports int sol1, int sol2, int sol3, int limitSwitchPortDown, int limitSwitchPortLoaded */);
     
     /**
      * This function is called once each time the robot enters autonomous mode.
@@ -41,7 +42,15 @@ public class RobotTemplate extends SimpleRobot {
         while(isEnabled()) {
             yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
             Timer.delay(0.01);
-            
+                                               
+            //This allows the driver to either launch the catapult or bring it down
+            if (rightJoy.getTrigger() && catapult.isDown() == true){
+                catapult.armTop(); //If the limit switch registers that the arm is all the way down and the right trigger is pressed, the arm will go up
+            }else if (leftJoy.getTrigger()){
+                catapult.armBottom(); //If the left trigger is pressed the arm will go down
+            }else if (rightJoy.getRawButton(12)){
+                catapult.armTop(); //This allows an override so that the arm can be moved up without the limit needing to be selected
+            }else{}            
         }
     }
     
