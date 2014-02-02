@@ -4,9 +4,6 @@
 *.jar
 *.war
 *.ear
-<<<<<<< HEAD
-/build/
-=======
 /build/
 .xml
->>>>>>> origin/master
+!build.xml
