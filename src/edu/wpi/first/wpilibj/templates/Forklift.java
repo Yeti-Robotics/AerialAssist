@@ -18,50 +18,53 @@ import edu.wpi.first.wpilibj.Talon;
  */
 
 public class Forklift {
-    DigitalInput upLimit = new DigitalInput(1);
-    DigitalInput midLimit = new DigitalInput(3);
-    DigitalInput downLimit = new DigitalInput(6);
+    DigitalInput upLimit;
+    DigitalInput midLimit;
+    DigitalInput downLimit;
     Talon forkTalon = new Talon(7);
     boolean aboveMiddle;
 
-    public void Forklift() {
+    public Forklift(final int FORK_UP_LIMIT_POS, final int FORK_MIDDLE_LIMIT_POS, final int FORK_DOWN_LIMIT_POS) {
        aboveMiddle = true;
-        
+       upLimit = new DigitalInput(FORK_UP_LIMIT_POS);
+       midLimit = new DigitalInput(FORK_MIDDLE_LIMIT_POS);
+       downLimit = new DigitalInput(FORK_DOWN_LIMIT_POS);
+       forkTalon = new Talon(7);
     }
     /** this method makes the forklift move up if the upper limit switch is not being pushed.**/
     public void moveUp() {
         //upLimit is port 1
-    if (downLimit.get()== false) {
-        forkTalon.set(0);
-    }
-    else {
-        forkTalon.set(-1);
-    }
+        if (downLimit.get()== false) {
+            forkTalon.set(0);
+        }
+        else {
+            forkTalon.set(-1);
+        }
     }
 /** this method makes the forklift move down if the bottom limit switch is not being pushed.**/
     public void moveDown(){
         //downLimit is port 6
-    if (upLimit.get()== false) {
-        forkTalon.set(0);
-    }
-    else {
-        forkTalon.set(1);
-    }
+        if (upLimit.get()== false) {
+            forkTalon.set(0);
+        }
+        else {
+            forkTalon.set(1);
+        }
     }
     public void moveMiddle(){}
     
     public void aboveMiddle(){
-    if (midLimit.get()== false) {
-        forkTalon.set(0.5);
-    }
+        if (midLimit.get()== false) {
+            forkTalon.set(0.5);
+        }
     }
     public void belowMiddle(){
-    if (midLimit.get()== false) {
-        forkTalon.set(-1);
-    }
+        if (midLimit.get()== false) {
+            forkTalon.set(-1);
+        }
     }
     /** this method makes the forklift stop moving.**/
     public void stop(){
-    forkTalon.set(0);
+        forkTalon.set(0);
     }
 }

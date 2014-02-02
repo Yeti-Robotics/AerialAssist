@@ -50,15 +50,15 @@ public class Catapult {
      * @param LSPLOADED port for the isLoaded limit switch
      * @param LSPMIDDLE port for the armBottomMiddle limit switch on the pistons
      */
-    public void Catapult(final int SPI1, final int SPI2, final int LSPDOWN, final int LSPLOADED, final int LSPMIDDLE){
+    public Catapult(final int UP_SPIKE_POS, final int DOWN_SPIKE_POS, final int CAT_LOWER_LIMIT_POS, final int CAT_MIDDLE_LIMIT_POS, final int CAT_LOADED_LIMIT_POS){
         
         //upSol = new Solenoid(sol1);
         //downSpike = new Solenoid(sol2);
-        upSpike = new Relay(SPI1); //If upSol is set to Relay.Value.kOn and downSpike is set to Relay.Value.kOff then the arm will go up
-        downSpike = new Relay(SPI2); //If downSpike is set to Relay.Value.kOn and upSol is set to Relay.Value.kOff then the arm will go down
-        armDownLimit = new DigitalInput(LSPDOWN);     
-        armLoadedLimit = new DigitalInput(LSPLOADED);
-        armMiddleLimit = new DigitalInput(LSPMIDDLE);
+        upSpike = new Relay(UP_SPIKE_POS); //If upSol is set to Relay.Value.kOn and downSpike is set to Relay.Value.kOff then the arm will go up
+        downSpike = new Relay(DOWN_SPIKE_POS); //If downSpike is set to Relay.Value.kOn and upSol is set to Relay.Value.kOff then the arm will go down
+        armDownLimit = new DigitalInput(CAT_LOWER_LIMIT_POS);     
+        armLoadedLimit = new DigitalInput(CAT_LOADED_LIMIT_POS);
+        armMiddleLimit = new DigitalInput(CAT_MIDDLE_LIMIT_POS);
     }
     
     /**
@@ -128,8 +128,5 @@ public class Catapult {
         upSpike.set(Relay.Value.kOff);
     }
     
-    public void driveForward(){
-    
-    }
 }
 

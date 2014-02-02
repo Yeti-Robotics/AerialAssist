@@ -23,15 +23,36 @@ import edu.wpi.first.wpilibj.Timer;
  */
 
 public class RobotTemplate extends SimpleRobot {
+    
+    //CATAPULT
+    
+    private static int UP_SPIKE_POS = 1;
+    private static int DOWN_SPIKE_POS = 2;
+    private static int CAT_LOWER_LIMIT_POS = 3;
+    private static int CAT_MIDDLE_LIMIT_POS = 4;
+    private static int CAT_LOADED_LIMIT_POS = 5;
+    
+    //FORKLIFT
+    
+    /*private static int UP_SPIKE_POS = 1;
+    private static int DOWN_SPIKE_POS = 2;
+    private static int CAT_LOWER_LIMIT_POS = 3;
+    private static int CAT_MIDDLE_LIMIT_POS = 4;
+    private static int CAT_LOADED_LIMIT_POS = 5;
+    */
+    
+    
     double modifier = 1d;
     Joystick leftJoy = new Joystick(2);
     Joystick rightJoy = new Joystick(1);
+    Joystick shootJoy = new Joystick(3);
     boolean[] inverted = {false, false, true, true};
     DriveTrain yetiDrive = new DriveTrain(1, 2, 3, 4, inverted, 1);     
     DriverStationLCD driverStationLCD;
     AnalogChannel sonar = new AnalogChannel (3);
-    Tracker tracker = new Tracker();
-    Forklift forklift = new Forklift();
+    Tracker tracker;
+    Forklift forklift;
+    Catapult catapult; 
 
     
     /**
@@ -40,7 +61,7 @@ public class RobotTemplate extends SimpleRobot {
     public void autonomous() {
         while (tracker.trackY(5, sonar, .3) != 0)
         {
-        yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+            yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
         }
 }
 
@@ -48,6 +69,9 @@ public class RobotTemplate extends SimpleRobot {
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
+        tracker = new Tracker();
+        //forklift = new Forklift();
+        catapult = new Catapult(UP_SPIKE_POS,DOWN_SPIKE_POS,CAT_LOWER_LIMIT_POS,CAT_MIDDLE_LIMIT_POS,CAT_LOADED_LIMIT_POS);
         driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
             if(leftJoy.getRawButton(3))
@@ -73,6 +97,14 @@ public class RobotTemplate extends SimpleRobot {
             else if(rightJoy.getRawButton(3))
             {
                 forklift.moveMiddle();
+            }
+            else
+            {
+                forklift.stop();
+            }
+            if(shootJoy.getRawButton(1))
+            {
+                catapult.armTop();
             }
             driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
             driverStationLCD.updateLCD();
