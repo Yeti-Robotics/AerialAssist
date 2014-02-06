@@ -30,31 +30,29 @@ public class Forklift {
     }
     /** this method makes the forklift move up if the upper limit switch is not being pushed.**/
     //upLimit is port 1
-    public boolean moveUp() {
-        boolean upLimitPressed;
-    if (downLimit.get()== false) {
+    public void moveUp() {
+    if (upLimit.get()) {
         forkTalon.set(0);
-        upLimitPressed = false;
-    }
-    else {
-        upLimitPressed = true;
+    } else if (downLimit.get()) {
         forkTalon.set(-1);
     }
-    return upLimitPressed;
+    else {
+        forkTalon.set(-1);
+    }
+    
     }
 /** this method makes the forklift move down if the bottom limit switch is not being pushed.**/
     //downLimit is port 6
-    public boolean moveDown(){
-        boolean downLimitPressed;
-    if (upLimit.get()== false) {
-        downLimitPressed = false;
+    public void moveDown(){
+    if (downLimit.get()) {
         forkTalon.set(0);
+    } else if (upLimit.get()) {
+        forkTalon.set(0.5);
     }
     else {
-        downLimitPressed = true;
-        forkTalon.set(1);
+        forkTalon.set(0.5);
     }
-    return downLimitPressed;
+   
     }
     public void moveMiddle(){}
     
