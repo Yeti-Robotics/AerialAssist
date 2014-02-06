@@ -42,21 +42,26 @@ public class RobotTemplate extends SimpleRobot {
     
     
     double modifier = 1d;
-    Joystick leftJoy = new Joystick(2);
-    Joystick rightJoy = new Joystick(1);
-    Joystick shootJoy = new Joystick(3);
+    Joystick leftJoy;
+    Joystick rightJoy;
+    Joystick shootJoy;
     boolean[] inverted = {false, false, true, true};
-    DriveTrain yetiDrive = new DriveTrain(1, 3, 2, 4, inverted, 2);     
+    DriveTrain yetiDrive;     
     DriverStationLCD driverStationLCD;
-    AnalogChannel sonar = new AnalogChannel (3);
+    AnalogChannel sonar;
     Tracker tracker;
     Forklift forklift;
     Catapult catapult; 
 
     
     public void robotInit() {
+        leftJoy = new Joystick(2);
+        rightJoy = new Joystick(1);
+        shootJoy = new Joystick(3);
+        yetiDrive = new DriveTrain(1, 3, 2, 4, inverted, 2);
+        sonar = new AnalogChannel(3);
         catapult = new Catapult(UP_SPIKE_POS, DOWN_SPIKE_POS, CAT_LOWER_LIMIT_POS, CAT_MIDDLE_LIMIT_POS, CAT_LOADED_LIMIT_POS);
-        
+        forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
     }
     
     
