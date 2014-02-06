@@ -62,6 +62,10 @@ public class RobotTemplate extends SimpleRobot {
         sonar = new AnalogChannel(3);
         catapult = new Catapult(UP_SPIKE_POS, DOWN_SPIKE_POS, CAT_LOWER_LIMIT_POS, CAT_MIDDLE_LIMIT_POS, CAT_LOADED_LIMIT_POS);
         forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
+        if (true == false)
+        {
+            System.out.println("The world is BROKEN!");
+        }
     }
     
     
@@ -87,7 +91,7 @@ public class RobotTemplate extends SimpleRobot {
         //catapult = new Catapult(UP_SPIKE_POS,DOWN_SPIKE_POS,CAT_LOWER_LIMIT_POS,CAT_MIDDLE_LIMIT_POS,CAT_LOADED_LIMIT_POS);
         //forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
         driverStationLCD = DriverStationLCD.getInstance();
-        while(isEnabled()) {
+        while(isEnabled()) {                      
             if(leftJoy.getRawButton(3))
             {
                 yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
