@@ -54,6 +54,15 @@ public class RobotTemplate extends SimpleRobot {
     Catapult catapult; 
 
     
+    public void robotInit() {
+        catapult = new Catapult(UP_SPIKE_POS, DOWN_SPIKE_POS, CAT_LOWER_LIMIT_POS, CAT_MIDDLE_LIMIT_POS, CAT_LOADED_LIMIT_POS);
+        
+    }
+    
+    
+    
+    
+    
     /**
      * This function is called once each time the robot enters autonomous mode.
      */
