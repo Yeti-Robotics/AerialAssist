@@ -9,9 +9,11 @@ package edu.wpi.first.wpilibj.templates;
 
 
 import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -39,9 +41,18 @@ public class RobotTemplate extends SimpleRobot {
     private static int FORK_DOWN_LIMIT_POS = 8;
     private static int FORK_TALON = 9;
         
+    //COMPRESSOR
+    
+    public static int COMPRESSOR_RELAY_POS = 1; //RO
+    public static int DIGITAL_COMPRESSOR_POS = 1;//di
     
     
     double modifier = 1d;
+    double leftX = 0;
+    double leftY = 0;
+    double rightX = 0;
+    boolean isLinear = true;
+    
     Joystick leftJoy;
     Joystick rightJoy;
     Joystick shootJoy;
@@ -53,6 +64,8 @@ public class RobotTemplate extends SimpleRobot {
     Forklift forklift;
     Catapult catapult; 
 
+    private Relay compressorSpike = new Relay(COMPRESSOR_RELAY_POS);
+    //private DigitalInput digitalCompressor = new DigitalInput(DIGITAL_COMPRESSOR_POS);
     
     public void robotInit() {
         leftJoy = new Joystick(2);
@@ -84,11 +97,15 @@ public class RobotTemplate extends SimpleRobot {
      */
     public void operatorControl() {
         tracker = new Tracker();
+        
         //forklift = new Forklift();
         //catapult = new Catapult(UP_SPIKE_POS,DOWN_SPIKE_POS,CAT_LOWER_LIMIT_POS,CAT_MIDDLE_LIMIT_POS,CAT_LOADED_LIMIT_POS);
         //forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
         driverStationLCD = DriverStationLCD.getInstance();
-        while(isEnabled()) {                      
+        while(isEnabled()) {
+            if(shootJoy.getRawButton(9)){
+                compressorSpike.set(Relay.Value.kForward);
+            }
             if(leftJoy.getRawButton(3))
             {
                 yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
@@ -98,7 +115,114 @@ public class RobotTemplate extends SimpleRobot {
             }
             else
             {
-                yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
+                if(Math.abs(leftJoy.getX())>.1)
+                {
+                    leftX = leftJoy.getX();
+                }
+                else
+                {
+                    leftX = 0;
+                }
+                
+                if(Math.abs(leftJoy.getY())>.1)
+                {
+                    leftY = leftJoy.getY();
+                }
+                else
+                {
+                    leftY = 0;
+                }
+                
+                if(Math.abs(rightJoy.getX())>.1)
+                {
+                    rightX = rightJoy.getX();
+                }
+                else
+                {
+                    rightX = 0;
+                }
+                
+                if(shootJoy.getRawButton(2))
+                {
+                    if(leftX < 0){
+                        leftX = leftX*leftX*-1;
+                    }
+                    else{
+                        leftX = leftX*leftX;
+                     }
+                    if(leftY < 0){
+                        leftY = leftY*leftY*-1;
+                    }
+                    else{
+                        leftY = leftY*leftY;    
+                    }
+                    if(rightX < 0){
+                        rightX = rightX*rightX*-1;
+                    }
+                    else{
+                        rightX = rightX*rightX; 
+                    }
+                }
+                else if(shootJoy.getRawButton(3))
+                {
+                   
+                    
+                    
+                    if(leftX < 0){
+                        leftX = Math.sqrt(leftX*-1)*-1;
+                    }
+                    else{
+                        leftX = Math.sqrt(leftX);
+                     }
+                    if(leftY < 0){
+                        leftY = Math.sqrt(leftY*-1)*-1;
+                    }
+                    else{
+                        leftY = Math.sqrt(leftY);    
+                    }
+                    if(rightX < 0){
+                        rightX = Math.sqrt(rightX*-1)*-1;
+                    }
+                    else{
+                        rightX = Math.sqrt(rightX); 
+                    }
+                }
+                else if(shootJoy.getRawButton(4))
+                {
+                   leftX = leftX*leftX*leftX;
+                    leftY = leftY*leftY*leftY;
+                    rightX = rightX*rightX*rightX; 
+                }
+                /*if(isLinear == false)
+                {
+                    leftX = leftX*leftX;
+                    leftY = leftY*leftY;
+                    rightX = rightX*rightX;
+                    
+                    /*
+                    leftX = Math.sqrt(leftX);
+                    leftY = Math.sqrt(leftY);
+                    rightX = Math.sqrt(rightX);
+                    */
+                    
+                    /*
+                    leftX = leftX*leftX*leftX;
+                    leftY = leftY*leftY*leftY;
+                    rightX = rightX*rightX*rightX;
+                    */
+                //}
+                
+                yetiDrive.drive(leftX * modifier, leftY * modifier, rightX * modifier);
+                //if (!digitalCompressor.get())
+                //{
+                    //compressorSpike.set(Relay.Value.kForward);
+                    //System.out.println("Not Full");
+                /*}
+                else
+                {
+                    compressorSpike.set(Relay.Value.kOff);
+                    //System.out.println("Full");
+                }*/
             }
 
             /*if(rightJoy.getRawButton(2))
