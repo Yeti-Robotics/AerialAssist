@@ -239,12 +239,10 @@ public class RobotTemplate extends SimpleRobot {
             if(rightJoy.getRawButton(2))
             {
                 forklift.moveUpNoSwitch(1.0);
-                System.out.println("moving up");
             }
             else if(leftJoy.getRawButton(3))
             {
                 forklift.moveDownNoSwitch(-0.5);
-                System.out.println("moving down");
             }
             else
             {
