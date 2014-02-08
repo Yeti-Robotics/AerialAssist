@@ -39,7 +39,7 @@ public class RobotTemplate extends SimpleRobot {
     private static int FORK_UP_LIMIT_POS = 6;
     private static int FORK_MIDDLE_LIMIT_POS = 7;
     private static int FORK_DOWN_LIMIT_POS = 8;
-    private static int FORK_TALON = 9;
+    private static int FORK_TALON = 5;
         
     //COMPRESSOR
     
@@ -60,9 +60,9 @@ public class RobotTemplate extends SimpleRobot {
     DriveTrain yetiDrive;     
     DriverStationLCD driverStationLCD;
     AnalogChannel sonar;
-    Tracker tracker;
+    //Tracker tracker;
     Forklift forklift;
-    Catapult catapult; 
+    //Catapult catapult; 
 
     private Relay compressorSpike = new Relay(COMPRESSOR_RELAY_POS);
     //private DigitalInput digitalCompressor = new DigitalInput(DIGITAL_COMPRESSOR_POS);
@@ -73,7 +73,7 @@ public class RobotTemplate extends SimpleRobot {
         shootJoy = new Joystick(3);
         yetiDrive = new DriveTrain(1, 3, 2, 4, inverted, 2);
         sonar = new AnalogChannel(3);
-        catapult = new Catapult(UP_SPIKE_POS, DOWN_SPIKE_POS, CAT_LOWER_LIMIT_POS, CAT_MIDDLE_LIMIT_POS, CAT_LOADED_LIMIT_POS);
+       // catapult = new Catapult(UP_SPIKE_POS, DOWN_SPIKE_POS, CAT_LOWER_LIMIT_POS, CAT_MIDDLE_LIMIT_POS, CAT_LOADED_LIMIT_POS);
         forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
 
     }
@@ -86,7 +86,7 @@ public class RobotTemplate extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
-        while (tracker.trackY(5, sonar, .3) != 0)
+       /* while (tracker.trackY(5, sonar, .3) != 0)
         {
             yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
         }
@@ -101,14 +101,14 @@ public class RobotTemplate extends SimpleRobot {
             forklift.moveDown();
             Timer.delay(2);
             catapult.shootTop();
-        }
+        }*/
 }
 
     /**
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
-        tracker = new Tracker();
+        //tracker = new Tracker();
         
         //forklift = new Forklift();
         //catapult = new Catapult(UP_SPIKE_POS,DOWN_SPIKE_POS,CAT_LOWER_LIMIT_POS,CAT_MIDDLE_LIMIT_POS,CAT_LOADED_LIMIT_POS);
@@ -120,9 +120,9 @@ public class RobotTemplate extends SimpleRobot {
             }
             if(leftJoy.getRawButton(3))
             {
-                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
-                System.out.println("track: " + tracker.trackY(5,sonar,.3));
-                driverStationLCD.println(DriverStationLCD.Line.kUser1, 3, "tracking");
+               // yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+                //System.out.println("track: " + tracker.trackY(5,sonar,.3));
+                //driverStationLCD.println(DriverStationLCD.Line.kUser1, 3, "tracking");
                 
             }
             else
@@ -236,7 +236,20 @@ public class RobotTemplate extends SimpleRobot {
                     //System.out.println("Full");
                 }*/
             }
-
+            if(rightJoy.getRawButton(2))
+            {
+                forklift.moveUpNoSwitch(1.0);
+                System.out.println("moving up");
+            }
+            else if(leftJoy.getRawButton(3))
+            {
+                forklift.moveDownNoSwitch(-0.5);
+                System.out.println("moving down");
+            }
+            else
+            {
+                forklift.stop();
+            }
             /*if(rightJoy.getRawButton(2))
             {
                 forklift.moveUp();
@@ -257,8 +270,8 @@ public class RobotTemplate extends SimpleRobot {
             {
                 catapult.armTop();
             }*/
-            driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
-            driverStationLCD.updateLCD();
+           // driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
+           // driverStationLCD.updateLCD();
             Timer.delay(0.01);
             
         }

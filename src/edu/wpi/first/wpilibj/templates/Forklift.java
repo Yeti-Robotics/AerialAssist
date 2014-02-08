@@ -21,7 +21,7 @@ public class Forklift {
     DigitalInput upLimit;
     DigitalInput midLimit;
     DigitalInput downLimit;
-    Talon forkTalon = new Talon(7);
+    Talon forkTalon;
     boolean aboveMiddle;
 
     public Forklift(final int FORK_UP_LIMIT_POS, final int FORK_MIDDLE_LIMIT_POS, final int FORK_DOWN_LIMIT_POS, final int FORK_TALON) {
@@ -32,35 +32,44 @@ public class Forklift {
        forkTalon = new Talon(FORK_TALON);
     }
     /** this method makes the forklift move up if the upper limit switch is not being pushed.**/
-    public void moveUp() {
+    public void moveUp(double speed) {
         //upLimit is port 1
+        
         if (downLimit.get()== false) {
             forkTalon.set(0);
         }
         else {
-            forkTalon.set(-1);
+            forkTalon.set(speed);
         }
     }
+    public void moveUpNoSwitch(double speed) {
+        //upLimit is port 1
+            forkTalon.set(speed);
+    }
+    public void moveDownNoSwitch(double speed) {
+        //upLimit is port 1
+            forkTalon.set(speed);
+    }
 /** this method makes the forklift move down if the bottom limit switch is not being pushed.**/
-    public void moveDown(){
+    public void moveDown(double speed){
         //downLimit is port 6
         if (upLimit.get()== false) {
             forkTalon.set(0);
         }
         else {
-            forkTalon.set(1);
+            forkTalon.set(speed);
         }
     }
-    public void moveMiddle(){}
+    public void moveMiddle(double speed){}
     
-    public void aboveMiddle(){
+    public void aboveMiddle(double speed){
         if (midLimit.get()== false) {
-            forkTalon.set(0.5);
+            forkTalon.set(speed);
         }
     }
-    public void belowMiddle(){
+    public void belowMiddle(double speed){
         if (midLimit.get()== false) {
-            forkTalon.set(-1);
+            forkTalon.set(speed);
         }
     }
     /** this method makes the forklift stop moving.**/
