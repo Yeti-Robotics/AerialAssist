@@ -90,6 +90,18 @@ public class RobotTemplate extends SimpleRobot {
         {
             yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
         }
+        if (catapult.isLoaded() && catapult.isBottom())
+        {
+            catapult.shootTop();
+        }
+        else
+        {
+            forklift.moveUp();
+            Timer.delay(2);
+            forklift.moveDown();
+            Timer.delay(2);
+            catapult.shootTop();
+        }
 }
 
     /**

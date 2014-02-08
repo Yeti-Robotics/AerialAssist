@@ -58,7 +58,8 @@ public class Catapult {
         boolean loadValue;
         if (armLoadedLimit.get() == true){
             loadValue = true;
-        }else{
+        }
+        else{
             loadValue = false;
         }
         return loadValue;
@@ -67,7 +68,7 @@ public class Catapult {
     /**
      * This method activates the solenoid spikes and launches the arm all the way up
      */
-    public void armTop(){
+    public void shootTop(){
         upSpike.set(Relay.Value.kOn);
         downSpike.set(Relay.Value.kOff);        
     }
@@ -103,6 +104,9 @@ public class Catapult {
     public void armBottom(){
         downSpike.set(Relay.Value.kOn);
         upSpike.set(Relay.Value.kOff);
+    }
+    public boolean isBottom() {
+        return armDownLimit.get();
     }
     
 }
