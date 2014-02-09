@@ -35,7 +35,7 @@ public class Forklift {
     public void moveUp(double speed) {
         //upLimit is port 1
         
-        if (downLimit.get()== false) {
+        if (upLimit.get()== false) {
             forkTalon.set(0);
         }
         else {
@@ -53,7 +53,7 @@ public class Forklift {
 /** this method makes the forklift move down if the bottom limit switch is not being pushed.**/
     public void moveDown(double speed){
         //downLimit is port 6
-        if (upLimit.get()== false) {
+        if (downLimit.get()== false) {
             forkTalon.set(0);
         }
         else {

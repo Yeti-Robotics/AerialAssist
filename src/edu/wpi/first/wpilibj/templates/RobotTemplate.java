@@ -28,23 +28,28 @@ public class RobotTemplate extends SimpleRobot {
     
     //CATAPULT
     
-    private static int UP_SPIKE_POS = 1;
-    private static int DOWN_SPIKE_POS = 2;
-    private static int CAT_LOWER_LIMIT_POS = 3;
-    private static int CAT_MIDDLE_LIMIT_POS = 4;
-    private static int CAT_LOADED_LIMIT_POS = 5;
+    private static int LEFT_PISTON_ARM_POS= 1;
+    private static int LEFT_PISTON_FIRE_POS= 2;
+    private static int RIGHT_PISTON_ARM_POS= 3;
+    private static int RIGHT_PISTON_FIRE_POS= 4;
+    private static int LATCH_OPEN_POS= 6;
+    private static int LATCH_CLOSED_POS= 5;
+    //private static int DOWN_SPIKE_POS = 2;
+    //private static int CAT_LOWER_LIMIT_POS = 3;
+    //private static int CAT_MIDDLE_LIMIT_POS = 4;
+    //private static int CAT_LOADED_LIMIT_POS = 5;
     
     //FORKLIFT
     
-    private static int FORK_UP_LIMIT_POS = 6;
-    private static int FORK_MIDDLE_LIMIT_POS = 7;
-    private static int FORK_DOWN_LIMIT_POS = 8;
+    private static int FORK_UP_LIMIT_POS = 2;
+    private static int FORK_MIDDLE_LIMIT_POS = 3;
+    private static int FORK_DOWN_LIMIT_POS = 1;
     private static int FORK_TALON = 5;
         
     //COMPRESSOR
     
     public static int COMPRESSOR_RELAY_POS = 1; //RO
-    public static int DIGITAL_COMPRESSOR_POS = 1;//di
+    public static int DIGITAL_COMPRESSOR_POS = 4;//di
     
     
     double modifier = 1d;
@@ -60,12 +65,12 @@ public class RobotTemplate extends SimpleRobot {
     DriveTrain yetiDrive;     
     DriverStationLCD driverStationLCD;
     AnalogChannel sonar;
-    //Tracker tracker;
+    Tracker tracker;
     Forklift forklift;
-    //Catapult catapult; 
+    Catapult catapult; 
 
     private Relay compressorSpike = new Relay(COMPRESSOR_RELAY_POS);
-    //private DigitalInput digitalCompressor = new DigitalInput(DIGITAL_COMPRESSOR_POS);
+    private DigitalInput digitalCompressor = new DigitalInput(DIGITAL_COMPRESSOR_POS);
     
     public void robotInit() {
         leftJoy = new Joystick(2);
@@ -73,9 +78,9 @@ public class RobotTemplate extends SimpleRobot {
         shootJoy = new Joystick(3);
         yetiDrive = new DriveTrain(1, 3, 2, 4, inverted, 2);
         sonar = new AnalogChannel(3);
-       // catapult = new Catapult(UP_SPIKE_POS, DOWN_SPIKE_POS, CAT_LOWER_LIMIT_POS, CAT_MIDDLE_LIMIT_POS, CAT_LOADED_LIMIT_POS);
+        catapult = new Catapult(LEFT_PISTON_ARM_POS, LEFT_PISTON_FIRE_POS, RIGHT_PISTON_ARM_POS, RIGHT_PISTON_FIRE_POS, LATCH_OPEN_POS, LATCH_CLOSED_POS);
         forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
-
+        tracker = new Tracker();
     }
     
     
@@ -108,21 +113,20 @@ public class RobotTemplate extends SimpleRobot {
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
-        //tracker = new Tracker();
-        
-        //forklift = new Forklift();
-        //catapult = new Catapult(UP_SPIKE_POS,DOWN_SPIKE_POS,CAT_LOWER_LIMIT_POS,CAT_MIDDLE_LIMIT_POS,CAT_LOADED_LIMIT_POS);
-        //forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
         driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
             if(shootJoy.getRawButton(9)){
                 compressorSpike.set(Relay.Value.kForward);
             }
-            if(leftJoy.getRawButton(3))
+            else if(shootJoy.getRawButton(8))
             {
-               // yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
-                //System.out.println("track: " + tracker.trackY(5,sonar,.3));
-                //driverStationLCD.println(DriverStationLCD.Line.kUser1, 3, "tracking");
+                compressorSpike.set(Relay.Value.kOff);
+            }
+            if(leftJoy.getRawButton(7))
+            {
+                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+                System.out.println("track: " + tracker.trackY(5,sonar,.3));
+                driverStationLCD.println(DriverStationLCD.Line.kUser1, 3, "tracking");
                 
             }
             else
@@ -225,51 +229,51 @@ public class RobotTemplate extends SimpleRobot {
                 //}
                 
                 yetiDrive.drive(leftX * modifier, leftY * modifier, rightX * modifier);
-                //if (!digitalCompressor.get())
-                //{
-                    //compressorSpike.set(Relay.Value.kForward);
-                    //System.out.println("Not Full");
-                /*}
+                if (!digitalCompressor.get())
+                {
+                    compressorSpike.set(Relay.Value.kForward);
+                    System.out.println("Not Full");
+                }
                 else
                 {
                     compressorSpike.set(Relay.Value.kOff);
-                    //System.out.println("Full");
-                }*/
+                    System.out.println("Full");
+                }
+            }
+            if(shootJoy.getRawButton(2))
+            {
+                catapult.shoot();
+            }
+            else if(shootJoy.getRawButton(3))
+            {
+                catapult.reload();
+            }
+            if(shootJoy.getRawButton(4))
+            {
+                catapult.openLatch();
+            }
+            else if(shootJoy.getRawButton(5))
+            {
+                catapult.closeLatch();
             }
             if(rightJoy.getRawButton(2))
             {
-                forklift.moveUpNoSwitch(1.0);
+                forklift.moveUp(1.0);
             }
             else if(leftJoy.getRawButton(3))
             {
-                forklift.moveDownNoSwitch(-0.5);
+                forklift.moveDown(-.5);
             }
-            else
-            {
-                forklift.stop();
-            }
-            /*if(rightJoy.getRawButton(2))
-            {
-                forklift.moveUp();
-            }
-            else if(leftJoy.getRawButton(3))
-            {
-                forklift.moveDown();
-            }
-            else if(rightJoy.getRawButton(3))
+            /*else if(rightJoy.getRawButton(3))
             {
                 forklift.moveMiddle();
-            }
+            }*/
             else
             {
                 forklift.stop();
             }
-            if(shootJoy.getRawButton(1))
-            {
-                catapult.armTop();
-            }*/
-           // driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
-           // driverStationLCD.updateLCD();
+            driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
+            driverStationLCD.updateLCD();
             Timer.delay(0.01);
             
         }

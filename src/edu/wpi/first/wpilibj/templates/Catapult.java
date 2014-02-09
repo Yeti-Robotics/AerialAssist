@@ -7,12 +7,16 @@ package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Relay;
 
 public class Catapult {
         
     //Solenoid upSol;
     //Solenoid downSpike;
+    DoubleSolenoid leftPiston;
+    DoubleSolenoid rightPiston;
+    DoubleSolenoid latchPiston;
     DigitalInput armDownLimit; 
     DigitalInput armLoadedLimit;
     DigitalInput armMiddleLimit;
@@ -27,15 +31,18 @@ public class Catapult {
      * @param LSPLOADED port for the isLoaded limit switch
      * @param LSPMIDDLE port for the armBottomMiddle limit switch on the pistons
      */
-    public Catapult(final int UP_SPIKE_POS, final int DOWN_SPIKE_POS, final int CAT_LOWER_LIMIT_POS, final int CAT_MIDDLE_LIMIT_POS, final int CAT_LOADED_LIMIT_POS){
+    public Catapult(int leftArm,int leftFire,int rightArm, int rightFire, int latchOpen, int latchClose){
         
         //upSol = new Solenoid(sol1);
         //downSpike = new Solenoid(sol2);
-        upSpike = new Relay(UP_SPIKE_POS); //If upSol is set to Relay.Value.kOn and downSpike is set to Relay.Value.kOff then the arm will go up
-        downSpike = new Relay(DOWN_SPIKE_POS); //If downSpike is set to Relay.Value.kOn and upSol is set to Relay.Value.kOff then the arm will go down
-        armDownLimit = new DigitalInput(CAT_LOWER_LIMIT_POS);     
-        armLoadedLimit = new DigitalInput(CAT_LOADED_LIMIT_POS);
-        armMiddleLimit = new DigitalInput(CAT_MIDDLE_LIMIT_POS);
+        //upSpike = new Relay(UP_SPIKE_POS); //If upSol is set to Relay.Value.kOn and downSpike is set to Relay.Value.kOff then the arm will go up
+        //downSpike = new Relay(DOWN_SPIKE_POS); //If downSpike is set to Relay.Value.kOn and upSol is set to Relay.Value.kOff then the arm will go down
+        //armDownLimit = new DigitalInput(CAT_LOWER_LIMIT_POS);     
+        //armLoadedLimit = new DigitalInput(CAT_LOADED_LIMIT_POS);
+        //armMiddleLimit = new DigitalInput(CAT_MIDDLE_LIMIT_POS);
+        leftPiston = new DoubleSolenoid(leftArm,leftFire);
+        rightPiston = new DoubleSolenoid(rightArm,rightFire);
+        latchPiston = new DoubleSolenoid(latchOpen,latchClose);
     }
     
     /**
@@ -68,9 +75,28 @@ public class Catapult {
     /**
      * This method activates the solenoid spikes and launches the arm all the way up
      */
-    public void shootTop(){
-        upSpike.set(Relay.Value.kOn);
-        downSpike.set(Relay.Value.kOff);        
+    public void shoot(){
+        //upSpike.set(Relay.Value.kOn);
+        //downSpike.set(Relay.Value.kOff);        
+        leftPiston.set(DoubleSolenoid.Value.kForward); 
+        rightPiston.set(DoubleSolenoid.Value.kForward); 
+    }
+    public void reload(){
+        //upSpike.set(Relay.Value.kOn);
+        //downSpike.set(Relay.Value.kOff);        
+        leftPiston.set(DoubleSolenoid.Value.kReverse); 
+        rightPiston.set(DoubleSolenoid.Value.kReverse); 
+    }
+    
+    public void openLatch(){
+        //upSpike.set(Relay.Value.kOn);
+        //downSpike.set(Relay.Value.kOff);        
+        latchPiston.set(DoubleSolenoid.Value.kForward); 
+    }
+    public void closeLatch(){
+        //upSpike.set(Relay.Value.kOn);
+        //downSpike.set(Relay.Value.kOff);        
+        latchPiston.set(DoubleSolenoid.Value.kReverse); 
     }
     
     /**
