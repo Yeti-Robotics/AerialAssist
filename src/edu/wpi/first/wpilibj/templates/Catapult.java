@@ -91,12 +91,12 @@ public class Catapult {
     public void openLatch(){
         //upSpike.set(Relay.Value.kOn);
         //downSpike.set(Relay.Value.kOff);        
-        latchPiston.set(DoubleSolenoid.Value.kForward); 
+        latchPiston.set(DoubleSolenoid.Value.kReverse); 
     }
     public void closeLatch(){
         //upSpike.set(Relay.Value.kOn);
         //downSpike.set(Relay.Value.kOff);        
-        latchPiston.set(DoubleSolenoid.Value.kReverse); 
+        latchPiston.set(DoubleSolenoid.Value.kForward); 
     }
     
     /**
