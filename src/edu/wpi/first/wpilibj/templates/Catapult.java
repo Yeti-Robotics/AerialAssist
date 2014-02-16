@@ -137,7 +137,7 @@ public class Catapult {
      */
     public void closeLatch(){
         //upSpike.set(Relay.Value.kOn);
-        //downSpike.set(Relay.Value.kOff);        
+        //downSpike.set(Relay.Value.kOff);
         latchPiston.set(DoubleSolenoid.Value.kForward);
         isOpen = false;
     }
