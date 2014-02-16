@@ -16,6 +16,22 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Timer;
 
+/*
+    BUTTONS ON JOYSTICKS
+    Compressor on: joy3, button 9
+    Compressor off: joy3, button 8
+    Box open: joy3, button 12
+    Box close: joy3, button 11
+    Catapult shoot: joy3, button 6
+    Catapult reload: joy3, button 7
+    Catapult openLatch: joy3, button 4
+    Catapult closeLatch: joy3, button 5
+    Catapult catUp: joy3, button 2
+    Catapult catDown: joy3, button 3
+    Fork up full speed: joy2, button 2
+    Fork down half speed: joy1, button 3
+*/
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the SimpleRobot
@@ -50,6 +66,7 @@ public class RobotTemplate extends SimpleRobot {
     
     public static int COMPRESSOR_RELAY_POS = 1; //RO
     public static int DIGITAL_COMPRESSOR_POS = 4;//di
+    public static int REEL_RELAY_POS = 5;
     
     
     double modifier = 1d;
@@ -67,7 +84,10 @@ public class RobotTemplate extends SimpleRobot {
     AnalogChannel sonar;
     Tracker tracker;
     Forklift forklift;
-    Catapult catapult; 
+    Catapult catapult;
+    Box box;
+    
+    private Relay reelSpike = new Relay(REEL_RELAY_POS);
 
     private Relay compressorSpike = new Relay(COMPRESSOR_RELAY_POS);
     private DigitalInput digitalCompressor = new DigitalInput(DIGITAL_COMPRESSOR_POS);
@@ -78,9 +98,10 @@ public class RobotTemplate extends SimpleRobot {
         shootJoy = new Joystick(3);
         yetiDrive = new DriveTrain(1, 3, 2, 4, inverted, 2);
         sonar = new AnalogChannel(3);
-        catapult = new Catapult(LEFT_PISTON_ARM_POS, LEFT_PISTON_FIRE_POS, RIGHT_PISTON_ARM_POS, RIGHT_PISTON_FIRE_POS, LATCH_OPEN_POS, LATCH_CLOSED_POS);
+        catapult = new Catapult(LEFT_PISTON_ARM_POS, LEFT_PISTON_FIRE_POS, RIGHT_PISTON_ARM_POS, RIGHT_PISTON_FIRE_POS, LATCH_OPEN_POS, LATCH_CLOSED_POS, 5);
         forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
         tracker = new Tracker();
+        box = new Box(6);
     }
     
     
@@ -91,23 +112,22 @@ public class RobotTemplate extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
-       /* while (tracker.trackY(5, sonar, .3) != 0)
-        {
-            yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+        if (forklift.isUp() == true){
+            while (tracker.trackY(5, sonar, .3) != 0&&forklift.isDown())
+            {
+                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+                catapult.reload();
+                forklift.moveDown(.5);
+            }
+            catapult.shoot();
+        }else{
+            while (tracker.trackY(5, sonar, .3) != 0)
+            {
+                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+            }
         }
-        if (catapult.isLoaded() && catapult.isBottom())
-        {
-            catapult.shootTop();
-        }
-        else
-        {
-            forklift.moveUp();
-            Timer.delay(2);
-            forklift.moveDown();
-            Timer.delay(2);
-            catapult.shootTop();
-        }*/
-}
+    }
+
 
     /**
      * This function is called once each time the robot enters operator control.
@@ -115,6 +135,15 @@ public class RobotTemplate extends SimpleRobot {
     public void operatorControl() {
         driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
+            //Tests the reel thing
+            if (shootJoy.getRawButton(12))
+            {
+                box.openBox();
+            }else if (shootJoy.getRawButton(11))
+            {
+                box.closeBox();
+            }else{}
+            //Turns on the air compressor
             if(shootJoy.getRawButton(9)){
                 compressorSpike.set(Relay.Value.kForward);
             }
@@ -122,6 +151,8 @@ public class RobotTemplate extends SimpleRobot {
             {
                 compressorSpike.set(Relay.Value.kOff);
             }
+            
+            //Displays distance from the ultrasonic sensor
             if(leftJoy.getRawButton(7))
             {
                 yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
@@ -131,6 +162,7 @@ public class RobotTemplate extends SimpleRobot {
             }
             else
             {
+                //Puts deadzones on the joysticks
                 if(Math.abs(leftJoy.getX())>.1)
                 {
                     leftX = leftJoy.getX();
@@ -183,7 +215,7 @@ public class RobotTemplate extends SimpleRobot {
                 {
                    
                     
-                    
+                    //New type of drive code 
                     if(leftX < 0){
                         leftX = Math.sqrt(leftX*-1)*-1;
                     }
@@ -229,6 +261,7 @@ public class RobotTemplate extends SimpleRobot {
                 //}
                 
                 yetiDrive.drive(leftX * modifier, leftY * modifier, rightX * modifier);
+                //Checks to see if the air tank is full 
                 if (!digitalCompressor.get())
                 {
                     compressorSpike.set(Relay.Value.kForward);
@@ -239,12 +272,13 @@ public class RobotTemplate extends SimpleRobot {
                     compressorSpike.set(Relay.Value.kOff);
                     System.out.println("Full");
                 }
+            //Driver can control the catapult and forklift with buttons    
             }
-            if(shootJoy.getRawButton(2))
+            if(shootJoy.getRawButton(6))
             {
                 catapult.shoot();
             }
-            else if(shootJoy.getRawButton(3))
+            else if(shootJoy.getRawButton(7))
             {
                 catapult.reload();
             }
@@ -255,6 +289,14 @@ public class RobotTemplate extends SimpleRobot {
             else if(shootJoy.getRawButton(5))
             {
                 catapult.closeLatch();
+            }
+            else if(shootJoy.getRawButton(2))
+            {
+                catapult.catUp();
+            }
+            else if(shootJoy.getRawButton(3))
+            {
+                catapult.catDown();
             }
             if(rightJoy.getRawButton(2))
             {
@@ -275,6 +317,7 @@ public class RobotTemplate extends SimpleRobot {
             driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
             driverStationLCD.updateLCD();
             Timer.delay(0.01);
+            System.out.println("is done " + catapult.isBottom());
             
         }
     }

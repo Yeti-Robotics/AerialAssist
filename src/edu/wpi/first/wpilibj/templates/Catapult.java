@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Catapult {
         
@@ -22,6 +23,8 @@ public class Catapult {
     DigitalInput armMiddleLimit;
     Relay upSpike;
     Relay downSpike;
+    Timer timer;
+    boolean isOpen;
         
     /**
      * This is a constructor method to initialize ports given into the method through RobotTemplate.java
@@ -31,7 +34,7 @@ public class Catapult {
      * @param LSPLOADED port for the isLoaded limit switch
      * @param LSPMIDDLE port for the armBottomMiddle limit switch on the pistons
      */
-    public Catapult(int leftArm,int leftFire,int rightArm, int rightFire, int latchOpen, int latchClose){
+    public Catapult(int leftArm,int leftFire,int rightArm, int rightFire, int latchOpen, int latchClose, int armDownLimitPos){
         
         //upSol = new Solenoid(sol1);
         //downSpike = new Solenoid(sol2);
@@ -43,6 +46,8 @@ public class Catapult {
         leftPiston = new DoubleSolenoid(leftArm,leftFire);
         rightPiston = new DoubleSolenoid(rightArm,rightFire);
         latchPiston = new DoubleSolenoid(latchOpen,latchClose);
+        timer = new Timer();
+        armDownLimit = new DigitalInput(armDownLimitPos);
     }
     
     /**
@@ -72,31 +77,69 @@ public class Catapult {
         return loadValue;
     }
     
+     /*
+     * This method engages the latch, brings the catapult up, and disengages the latch
+     */
+    public void shoot(){
+        catUp();
+        timer.start();
+        timer.delay(2.5);                 
+        openLatch(); 
+        isOpen = true;
+        timer.stop();
+        timer.reset();               
+    }
+    
+    /**
+     * This method brings the catapult down and engages the latch
+     */
+    public void reload(){
+         if (isOpen == true){
+             catDown();
+             if (isDown()){
+                closeLatch();
+             }
+         }    
+    }
+    
     /**
      * This method activates the solenoid spikes and launches the arm all the way up
      */
-    public void shoot(){
+    public void catUp(){
         //upSpike.set(Relay.Value.kOn);
         //downSpike.set(Relay.Value.kOff);        
         leftPiston.set(DoubleSolenoid.Value.kForward); 
         rightPiston.set(DoubleSolenoid.Value.kForward); 
     }
-    public void reload(){
+    
+    /**
+     * This method brings the arm all the way down from the top
+     */
+    public void catDown(){
         //upSpike.set(Relay.Value.kOn);
         //downSpike.set(Relay.Value.kOff);        
         leftPiston.set(DoubleSolenoid.Value.kReverse); 
         rightPiston.set(DoubleSolenoid.Value.kReverse); 
     }
     
+    /**
+     * This method opens the latch freeing the catapult
+     */
     public void openLatch(){
         //upSpike.set(Relay.Value.kOn);
         //downSpike.set(Relay.Value.kOff);        
-        latchPiston.set(DoubleSolenoid.Value.kForward); 
+        latchPiston.set(DoubleSolenoid.Value.kReverse); 
+        isOpen = true;
     }
+    
+    /**
+     * This method closes the latch capturing the catapult
+     */
     public void closeLatch(){
         //upSpike.set(Relay.Value.kOn);
         //downSpike.set(Relay.Value.kOff);        
-        latchPiston.set(DoubleSolenoid.Value.kReverse); 
+        latchPiston.set(DoubleSolenoid.Value.kForward);
+        isOpen = false;
     }
     
     /**

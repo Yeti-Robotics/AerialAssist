@@ -49,7 +49,7 @@ public class DriveTrain {
    
     public void driveForward(double speed) {
  
-       drive.tankDrive(speed,speed);
+       drive.tankDrive(speed,-speed);
      
     } 
     

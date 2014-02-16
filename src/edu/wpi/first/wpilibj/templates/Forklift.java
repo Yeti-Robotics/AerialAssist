@@ -24,6 +24,13 @@ public class Forklift {
     Talon forkTalon;
     boolean aboveMiddle;
 
+    /**
+     * Constructor class to initiate ports for the forklift
+     * @param FORK_UP_LIMIT_POS Up limit switch port
+     * @param FORK_MIDDLE_LIMIT_POS Middle limit switch port
+     * @param FORK_DOWN_LIMIT_POS Down limit switch
+     * @param FORK_TALON Talon controlling the forklift
+     */
     public Forklift(final int FORK_UP_LIMIT_POS, final int FORK_MIDDLE_LIMIT_POS, final int FORK_DOWN_LIMIT_POS, final int FORK_TALON) {
        aboveMiddle = true;
        upLimit = new DigitalInput(FORK_UP_LIMIT_POS);
@@ -60,6 +67,15 @@ public class Forklift {
             forkTalon.set(speed);
         }
     }
+    
+    public boolean isDown(){
+        return downLimit.get();
+    }
+    
+    public boolean isUp(){
+        return upLimit.get();
+    }
+    
     public void moveMiddle(double speed){}
     
     public void aboveMiddle(double speed){
