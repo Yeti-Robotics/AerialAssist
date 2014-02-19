@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.Timer;
     BUTTONS ON JOYSTICKS
     Compressor on: joy3, button 9
     Compressor off: joy3, button 8
-    Box open: joy3, button 12
+    Box open: joy3, button 10
     Box close: joy3, button 11
     Catapult shoot: joy3, button 6
     Catapult reload: joy3, button 7
@@ -28,8 +28,9 @@ import edu.wpi.first.wpilibj.Timer;
     Catapult closeLatch: joy3, button 5
     Catapult catUp: joy3, button 2
     Catapult catDown: joy3, button 3
-    Fork up full speed: joy2, button 2
-    Fork down half speed: joy1, button 3
+    Fork up: joy2, button 2
+    Fork down: joy2, button 3
+    Drive froward for testing purposes: joy1, button 7
 */
 
 /**
@@ -102,6 +103,7 @@ public class RobotTemplate extends SimpleRobot {
         forklift = new Forklift(FORK_UP_LIMIT_POS, FORK_MIDDLE_LIMIT_POS, FORK_DOWN_LIMIT_POS, FORK_TALON);
         tracker = new Tracker();
         box = new Box(6);
+        
     }
     
     
@@ -112,18 +114,28 @@ public class RobotTemplate extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
+        yetiDrive.resetGyro();
+        System.out.println("autonomous is running");
         if (forklift.isUp() == true){
-            while (tracker.trackY(5, sonar, .3) != 0&&forklift.isDown())
+            System.out.println("the first autonomous loop is selected");
+            while ((tracker.trackY(7, sonar, .3) != 0) /*&& forklift.isDown()*/)
             {
-                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
-                catapult.reload();
-                forklift.moveDown(.5);
+                System.out.println("the tracker while loop is running");
+                yetiDrive.driveForward(tracker.trackY(7,sonar,.3));
+                System.out.println(/*forklift.isDown() + */"\t" + sonar.getVoltage()*10);
+                catapult.catDown();
+                //forklift.moveDown(.5);
+                Timer.delay(.01);
             }
-            catapult.shoot();
+            catapult.catUp();
         }else{
-            while (tracker.trackY(5, sonar, .3) != 0)
+            System.out.println("the second autonomous loop is selected");
+            while (tracker.trackY(7, sonar, .3) != 0)
             {
-                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
+                System.out.println("the tracker autonomous loop is running");
+                yetiDrive.driveForward(tracker.trackY(7,sonar,.3));
+                forklift.moveDown(.5);
+                Timer.delay(.01);
             }
         }
     }
@@ -136,13 +148,22 @@ public class RobotTemplate extends SimpleRobot {
         driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
             //Tests the reel thing
-            if (shootJoy.getRawButton(12))
+            if (shootJoy.getRawButton(10))
             {
                 box.openBox();
-            }else if (shootJoy.getRawButton(11))
+            }
+            else if (shootJoy.getRawButton(11))
             {
                 box.closeBox();
-            }else{}
+            }
+            else
+            {
+                box.stopBox();
+            }
+            if(leftJoy.getRawButton(8))
+            {
+                yetiDrive.resetGyro();
+            }
             //Turns on the air compressor
             if(shootJoy.getRawButton(9)){
                 compressorSpike.set(Relay.Value.kForward);
@@ -151,12 +172,21 @@ public class RobotTemplate extends SimpleRobot {
             {
                 compressorSpike.set(Relay.Value.kOff);
             }
-            
+            else if (!digitalCompressor.get())
+            {
+                compressorSpike.set(Relay.Value.kForward);
+                System.out.println("Not Full");
+            }
+            else
+            {
+                compressorSpike.set(Relay.Value.kOff);
+                System.out.println("Full");
+            }
             //Displays distance from the ultrasonic sensor
             if(leftJoy.getRawButton(7))
             {
-                yetiDrive.driveForward(tracker.trackY(5,sonar,.3));
-                System.out.println("track: " + tracker.trackY(5,sonar,.3));
+                yetiDrive.driveForward(tracker.trackY(7,sonar,.3));
+                System.out.println("track: " + tracker.trackY(7,sonar,.3));
                 driverStationLCD.println(DriverStationLCD.Line.kUser1, 3, "tracking");
                 
             }
@@ -190,6 +220,8 @@ public class RobotTemplate extends SimpleRobot {
                     rightX = 0;
                 }
                 
+                
+                /*                
                 if(shootJoy.getRawButton(2))
                 {
                     if(leftX < 0){
@@ -240,7 +272,7 @@ public class RobotTemplate extends SimpleRobot {
                    leftX = leftX*leftX*leftX;
                     leftY = leftY*leftY*leftY;
                     rightX = rightX*rightX*rightX; 
-                }
+                }*/
                 /*if(isLinear == false)
                 {
                     leftX = leftX*leftX;
@@ -260,18 +292,11 @@ public class RobotTemplate extends SimpleRobot {
                     */
                 //}
                 
+                //The first yetiDrive line is used with deadzones, the second is used without deadzones. The line not in use is commented out
                 yetiDrive.drive(leftX * modifier, leftY * modifier, rightX * modifier);
+                //yetiDrive.drive(leftJoy.getX() * modifier, leftJoy.getY() * modifier, rightJoy.getX() * modifier);
                 //Checks to see if the air tank is full 
-                if (!digitalCompressor.get())
-                {
-                    compressorSpike.set(Relay.Value.kForward);
-                    System.out.println("Not Full");
-                }
-                else
-                {
-                    compressorSpike.set(Relay.Value.kOff);
-                    System.out.println("Full");
-                }
+                
             //Driver can control the catapult and forklift with buttons    
             }
             if(shootJoy.getRawButton(6))
@@ -302,9 +327,9 @@ public class RobotTemplate extends SimpleRobot {
             {
                 forklift.moveUp(1.0);
             }
-            else if(leftJoy.getRawButton(3))
+            else if(rightJoy.getRawButton(3))
             {
-                forklift.moveDown(-.5);
+                forklift.moveDown(-.4);
             }
             /*else if(rightJoy.getRawButton(3))
             {
@@ -318,6 +343,9 @@ public class RobotTemplate extends SimpleRobot {
             driverStationLCD.updateLCD();
             Timer.delay(0.01);
             System.out.println("is done " + catapult.isBottom());
+            
+            //Debug
+            forklift.debugLimit();
             
         }
     }

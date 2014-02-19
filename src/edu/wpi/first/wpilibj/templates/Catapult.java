@@ -82,12 +82,10 @@ public class Catapult {
      */
     public void shoot(){
         catUp();
-        timer.start();
         timer.delay(2.5);                 
         openLatch(); 
         isOpen = true;
-        timer.stop();
-        timer.reset();               
+        System.out.println("shoot method called");
     }
     
     /**
@@ -100,6 +98,7 @@ public class Catapult {
                 closeLatch();
              }
          }    
+         System.out.println("reload method called");
     }
     
     /**

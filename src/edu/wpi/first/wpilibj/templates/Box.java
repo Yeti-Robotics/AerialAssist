@@ -33,4 +33,8 @@ public class Box {
     public void closeBox(){
         reelSpike.set(Relay.Value.kReverse);
     }
+    
+    public void stopBox(){
+        reelSpike.set(Relay.Value.kOff);
+    }
 }

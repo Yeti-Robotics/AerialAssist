@@ -41,6 +41,7 @@ public class DriveTrain {
         drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, inverted[3]);
         drive.setSafetyEnabled(true);
         gyro = new Gyro(gyroPort);
+        resetGyro();
     }
     
     public void drive(double x, double y, double rotation) {
@@ -53,6 +54,9 @@ public class DriveTrain {
      
     } 
     
+    public void resetGyro() {
+        gyro.reset();
+    } 
     /*public void driveCustom(double fr, double fl, double br, double bl){
          
         frontRight.set(fr);

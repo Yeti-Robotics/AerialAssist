@@ -92,4 +92,12 @@ public class Forklift {
     public void stop(){
         forkTalon.set(0);
     }
+    
+    /**
+     * This method prints debug for the limit switches
+     */
+    public void debugLimit(){
+        System.out.println("Down Limit Switch: \t" + downLimit.get() + "\n");
+        System.out.println("Up Limit Switch: \t" + upLimit.get());
+    }
 }
