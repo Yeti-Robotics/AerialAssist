@@ -351,6 +351,9 @@ public class RobotTemplate extends SimpleRobot {
             }
             driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + ((int)(100*sonar.getVoltage()+5)/10.0)+"   ");
             driverStationLCD.updateLCD();
+            
+            
+            
             Timer.delay(0.01);
             //System.out.println("is done " + catapult.isBottom());
             
@@ -363,7 +366,9 @@ public class RobotTemplate extends SimpleRobot {
     /**
      * This function is called once each time the robot enters test mode.
      */
+    
+    
     public void test() {
     
-    }
+    }    
 }
