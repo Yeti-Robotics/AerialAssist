@@ -330,14 +330,14 @@ public class Tracker {
             if((dToGoal+buffer)<(10*sonar.getVoltage()))
             {
                 
-                //System.out.println("Forward");
+                System.out.println("Forward");
                 direction = TRACK_SPEED;
                 
             }
             else if((dToGoal-buffer)>(10*sonar.getVoltage()))
             {
                 
-                //System.out.println("backward");
+                System.out.println("backward");
                 direction = -TRACK_SPEED;
             }
             else
