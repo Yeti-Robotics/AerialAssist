@@ -114,17 +114,27 @@ public class RobotTemplate extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
+        int repeat = 0;
         yetiDrive.resetGyro();
         System.out.println("autonomous is running");
         if (forklift.isUp() == true){
             System.out.println("the first autonomous loop is selected");
-            while ((tracker.trackY(7, sonar, .3) != 0) /*&& forklift.isDown()*/)
+            while (/*(tracker.trackY(7, sonar, .3) != 0 && */repeat < 10/*)*/ /*&& forklift.isDown()*/)
             {
-                System.out.println("the tracker while loop is running");
+                System.out.println("repeat:" + repeat);
+                if (tracker.trackY(7, sonar, .3) == 0)
+                {
+                    repeat++;
+                }
+                else
+                {
+                    repeat = 0;
+                }
+                //System.out.println("the tracker while loop is running");
                 yetiDrive.driveForward(tracker.trackY(7,sonar,.3));
                 System.out.println(/*forklift.isDown() + */"\t" + sonar.getVoltage()*10);
                 catapult.catDown();
-                //forklift.moveDown(.5);
+                forklift.moveDown(-0.5);
                 Timer.delay(.01);
             }
             catapult.catUp();
@@ -134,7 +144,7 @@ public class RobotTemplate extends SimpleRobot {
             {
                 System.out.println("the tracker autonomous loop is running");
                 yetiDrive.driveForward(tracker.trackY(7,sonar,.3));
-                forklift.moveDown(.5);
+                forklift.moveDown(-0.5);
                 Timer.delay(.01);
             }
         }
@@ -339,16 +349,16 @@ public class RobotTemplate extends SimpleRobot {
             {
                 forklift.stop();
             }
-            driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + 10*sonar.getVoltage());
+            driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "" + ((int)(100*sonar.getVoltage()+5)/10.0)+"   ");
             driverStationLCD.updateLCD();
             
             
             
             Timer.delay(0.01);
-            System.out.println("is done " + catapult.isBottom());
+            //System.out.println("is done " + catapult.isBottom());
             
             //Debug
-            forklift.debugLimit();
+            //forklift.debugLimit();
             
         }
     }
