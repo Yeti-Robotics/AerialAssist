@@ -172,7 +172,7 @@ public class RobotTemplate extends SimpleRobot {
 //                box.stopBox();
 //            }
             //Toggles the lights
-            System.out.println(toggleLights);
+            System.out.println("toggleLights is " + toggleLights);
             if (shootJoy.getRawButton(10) && toggleLights == false)
             {
                 toggleLights = true;
