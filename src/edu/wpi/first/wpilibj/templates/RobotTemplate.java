@@ -70,7 +70,7 @@ public class RobotTemplate extends SimpleRobot {
     public static int REEL_RELAY_POS = 5;
     
     
-    double modifier = 1d;
+    double modifier = 0.4d;
     double leftX = 0;
     double leftY = 0;
     double rightX = 0;
@@ -172,11 +172,12 @@ public class RobotTemplate extends SimpleRobot {
 //                box.stopBox();
 //            }
             //Toggles the lights
+            System.out.println(toggleLights);
             if (shootJoy.getRawButton(10) && toggleLights == false)
             {
                 toggleLights = true;
             }
-            else if (shootJoy.getRawButton(10) && toggleLights == true)
+            if (shootJoy.getRawButton(10) && toggleLights == true)
             {
                 toggleLights = false;
             }
