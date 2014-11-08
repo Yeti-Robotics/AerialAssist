@@ -75,6 +75,7 @@ public class RobotTemplate extends SimpleRobot {
     double leftY = 0;
     double rightX = 0;
     boolean isLinear = true;
+    boolean toggleLights = false;
     
     Joystick leftJoy;
     Joystick rightJoy;
@@ -158,17 +159,30 @@ public class RobotTemplate extends SimpleRobot {
         driverStationLCD = DriverStationLCD.getInstance();
         while(isEnabled()) {
             //Tests the reel thing
-            if (shootJoy.getRawButton(10))
+//            if (shootJoy.getRawButton(10))
+//            {
+//                box.openBox();
+//            }
+//            else if (shootJoy.getRawButton(11))
+//            {
+//                box.closeBox();
+//            }
+//            else
+//            {
+//                box.stopBox();
+//            }
+            //Toggles the lights
+            if (shootJoy.getRawButton(10) && toggleLights == false)
+            {
+                toggleLights = true;
+            }
+            else if (shootJoy.getRawButton(10) && toggleLights == true)
+            {
+                toggleLights = false;
+            }
+            if (toggleLights == true)
             {
                 box.openBox();
-            }
-            else if (shootJoy.getRawButton(11))
-            {
-                box.closeBox();
-            }
-            else
-            {
-                box.stopBox();
             }
             if(leftJoy.getRawButton(8))
             {
