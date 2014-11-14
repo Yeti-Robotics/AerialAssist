@@ -76,6 +76,8 @@ public class RobotTemplate extends SimpleRobot {
     double rightX = 0;
     boolean isLinear = true;
     boolean toggleLights = false;
+    long systemTime;
+    int gyroResetTime = 5000;
     
     Joystick leftJoy;
     Joystick rightJoy;
@@ -157,7 +159,16 @@ public class RobotTemplate extends SimpleRobot {
      */
     public void operatorControl() {
         driverStationLCD = DriverStationLCD.getInstance();
+        systemTime = System.currentTimeMillis();
         while(isEnabled()) {
+            
+            
+            if ((System.currentTimeMillis() - gyroResetTime) > systemTime)
+            {
+                yetiDrive.resetGyro();
+                systemTime = System.currentTimeMillis();
+            }
+            
             //Tests the reel thing
 //            if (shootJoy.getRawButton(10))
 //            {
